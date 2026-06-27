@@ -1,6 +1,7 @@
 const express = require("express")
 const dotenv = require("dotenv")
 const routes = require("./routes")
+const mongodb = require("./data/database")
 
 dotenv.config()
 
@@ -13,6 +14,16 @@ app.use(express.json())
 // This sends all main routes to my routes folder
 app.use("/", routes)
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`)
-})
+// This starts the server only after MongoDB connects successfully
+mongodb
+  .initDb()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`)
+    })
+  })
+  .catch((error) => {
+    console.error("Failed to start server:", error)
+  })
+
+  

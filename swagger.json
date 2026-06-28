@@ -5,9 +5,9 @@
     "description": "API documentation for the HomeFix final project",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "homefix-api-2yn3.onrender.com",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": ["https"],
   "paths": {
     "/homes": {
       "get": {
@@ -15,7 +15,7 @@
         "description": "Returns all homes saved in HomeFix",
         "responses": {
           "200": {
-            "description": "Homes returned successfully"
+            "description": "Homes returned success"
           }
         }
       },
@@ -34,10 +34,10 @@
         ],
         "responses": {
           "201": {
-            "description": "Home created successfully"
+            "description": "Home created success"
           },
           "400": {
-            "description": "Missing required information"
+            "description": "Missing required info"
           }
         }
       }
@@ -56,7 +56,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Home returned successfully"
+            "description": "Home returned"
           },
           "404": {
             "description": "Home not found"
@@ -84,10 +84,10 @@
         ],
         "responses": {
           "204": {
-            "description": "Home updated successfully"
+            "description": "Home updated success"
           },
           "400": {
-            "description": "Missing required information"
+            "description": "Missing required info"
           },
           "404": {
             "description": "Home not found"
@@ -107,7 +107,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Home deleted successfully"
+            "description": "Home deleted success"
           },
           "404": {
             "description": "Home not found"

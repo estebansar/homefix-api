@@ -9,16 +9,156 @@
   "basePath": "/",
   "schemes": ["http"],
   "paths": {
-    "/": {
+    "/homes": {
       "get": {
-        "summary": "Test route",
-        "description": "Checks if the HomeFix API is running",
+        "summary": "Get all homes",
+        "description": "Returns all homes saved in HomeFix",
         "responses": {
           "200": {
-            "description": "HomeFix API routes are working"
+            "description": "Homes returned successfully"
           }
+        }
+      },
+      "post": {
+        "summary": "Create a home",
+        "description": "Adds a new home",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "home",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Home"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Home created successfully"
+          },
+          "400": {
+            "description": "Missing required information"
+          }
+        }
+      }
+    },
+    "/homes/{id}": {
+      "get": {
+        "summary": "Get one home",
+        "description": "Returns one home by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Home returned successfully"
+          },
+          "404": {
+            "description": "Home not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a home",
+        "description": "Updates one home by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "home",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Home"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Home updated successfully"
+          },
+          "400": {
+            "description": "Missing required information"
+          },
+          "404": {
+            "description": "Home not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a home",
+        "description": "Deletes one home by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Home deleted successfully"
+          },
+          "404": {
+            "description": "Home not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Home": {
+      "type": "object",
+      "required": [
+        "homeName",
+        "address",
+        "city",
+        "state",
+        "zipCode",
+        "homeType",
+        "yearBuilt"
+      ],
+      "properties": {
+        "homeName": {
+          "type": "string",
+          "example": "Main House"
+        },
+        "address": {
+          "type": "string",
+          "example": "123 Maple Street"
+        },
+        "city": {
+          "type": "string",
+          "example": "Eagle Mountain"
+        },
+        "state": {
+          "type": "string",
+          "example": "UT"
+        },
+        "zipCode": {
+          "type": "string",
+          "example": "84005"
+        },
+        "homeType": {
+          "type": "string",
+          "example": "Single Family"
+        },
+        "yearBuilt": {
+          "type": "integer",
+          "example": 2020
         }
       }
     }
   }
 }
+

@@ -12,5 +12,6 @@ router.get("/", (req, res) => {
 router.get("/homes", homesController.getAllHomes)
 router.get("/homes/:id", homesController.getSingleHome)
 router.post("/homes", homesController.createHome)
+router.put("/homes/:id", homesController.updateHome)
 
 module.exports = router

@@ -70,9 +70,26 @@ const updateHome = async (req, res) => {
   }
 }
 
+// This deletes one home by id
+const deleteHome = async (req, res) => {
+  const homeId = new ObjectId(req.params.id)
+
+  const response = await mongodb
+    .getDb()
+    .collection("homes")
+    .deleteOne({ _id: homeId })
+
+  if (response.deletedCount > 0) {
+    res.status(204).send()
+  } else {
+    res.status(500).json({ message: "Failed to delete home." })
+  }
+}
+
 module.exports = {
   getAllHomes,
   getSingleHome,
   createHome,
-  updateHome
+  updateHome,
+  deleteHome
 }

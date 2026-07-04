@@ -13,5 +13,6 @@ router.get("/homes", homesController.getAllHomes)
 router.get("/homes/:id", homesController.getSingleHome)
 router.post("/homes", homesController.createHome)
 router.put("/homes/:id", homesController.updateHome)
+router.delete("/homes/:id", homesController.deleteHome)
 
 module.exports = router

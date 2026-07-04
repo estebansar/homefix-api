@@ -58,8 +58,8 @@
           "200": {
             "description": "Home returned"
           },
-          "404": {
-            "description": "Home not found"
+          "400": {
+            "description": "Invalid home id"
           }
         }
       },
@@ -87,10 +87,7 @@
             "description": "Home updated success"
           },
           "400": {
-            "description": "Missing required info"
-          },
-          "404": {
-            "description": "Home not found"
+            "description": "Invalid id or missing required info"
           }
         }
       },
@@ -106,11 +103,114 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Home deleted success"
           },
-          "404": {
-            "description": "Home not found"
+          "400": {
+            "description": "Invalid home id"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get all users",
+        "description": "Returns all users saved in HomeFix",
+        "responses": {
+          "200": {
+            "description": "Users returned success"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a user",
+        "description": "Adds a new user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created success"
+          },
+          "400": {
+            "description": "Missing required info"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Get one user",
+        "description": "Returns one user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User returned"
+          },
+          "400": {
+            "description": "Invalid user id"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a user",
+        "description": "Updates one user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User updated success"
+          },
+          "400": {
+            "description": "Invalid id or missing required info"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user",
+        "description": "Deletes one user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted success"
+          },
+          "400": {
+            "description": "Invalid user id"
           }
         }
       }
@@ -158,7 +258,28 @@
           "example": 2020
         }
       }
+    },
+    "User": {
+      "type": "object",
+      "required": ["firstName", "lastName", "email", "phone"],
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "John"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Smith"
+        },
+        "email": {
+          "type": "string",
+          "example": "johnsmith@email.com"
+        },
+        "phone": {
+          "type": "string",
+          "example": "801-555-1234"
+        }
+      }
     }
   }
 }
-

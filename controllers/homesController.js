@@ -43,8 +43,36 @@ const createHome = async (req, res) => {
   }
 }
 
+// This updates one home by id
+const updateHome = async (req, res) => {
+  const homeId = new ObjectId(req.params.id)
+
+  const home = {
+    ownerName: req.body.ownerName,
+    address: req.body.address,
+    city: req.body.city,
+    state: req.body.state,
+    zipCode: req.body.zipCode,
+    homeType: req.body.homeType,
+    yearBuilt: req.body.yearBuilt,
+    notes: req.body.notes
+  }
+
+  const response = await mongodb
+    .getDb()
+    .collection("homes")
+    .replaceOne({ _id: homeId }, home)
+
+  if (response.modifiedCount > 0) {
+    res.status(204).send()
+  } else {
+    res.status(500).json({ message: "Failed to update home." })
+  }
+}
+
 module.exports = {
   getAllHomes,
   getSingleHome,
-  createHome
+  createHome,
+  updateHome
 }

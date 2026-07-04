@@ -213,9 +213,113 @@
             "description": "Invalid user id"
           }
         }
+      } 
+    },
+    "/maintenanceTasks": {
+      "get": {
+        "summary": "Get all maintenance tasks",
+        "description": "Returns all maintenance tasks saved in HomeFix",
+        "responses": {
+          "200": {
+            "description": "Maintenance tasks returned success"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a maintenance task",
+        "description": "Adds a new maintenance task",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "maintenanceTask",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MaintenanceTask"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Maintenance task created success"
+          },
+          "400": {
+            "description": "Missing required info"
+          }
+        }
+      }
+    },
+    "/maintenanceTasks/{id}": {
+      "get": {
+        "summary": "Get one maintenance task",
+        "description": "Returns one maintenance task by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Maintenance task returned"
+          },
+          "400": {
+            "description": "Invalid maintenance task id"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a maintenance task",
+        "description": "Updates one maintenance task by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "maintenanceTask",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MaintenanceTask"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Maintenance task updated success"
+          },
+          "400": {
+            "description": "Invalid id or missing required info"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a maintenance task",
+        "description": "Deletes one maintenance task by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Maintenance task deleted success"
+          },
+          "400": {
+            "description": "Invalid maintenance task id"
+          }
+        }
       }
     }
   },
+
   "definitions": {
     "Home": {
       "type": "object",
@@ -278,6 +382,36 @@
         "phone": {
           "type": "string",
           "example": "801-555-1234"
+        }
+      }
+    },
+    "MaintenanceTask": {
+      "type": "object",
+      "required": ["homeId", "title", "description", "status"],
+      "properties": {
+        "homeId": {
+          "type": "string",
+          "example": "665f1234567890abcdef1234"
+        },
+        "title": {
+          "type": "string",
+          "example": "Replace air filter"
+        },
+        "description": {
+          "type": "string",
+          "example": "Replace the HVAC air filter in the main house."
+        },
+        "status": {
+          "type": "string",
+          "example": "Pending"
+        },
+        "dueDate": {
+          "type": "string",
+          "example": "2026-07-15"
+        },
+        "priority": {
+          "type": "string",
+          "example": "High"
         }
       }
     }

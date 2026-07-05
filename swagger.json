@@ -318,6 +318,109 @@
         }
       }
     }
+    },
+    "/contractors": {
+      "get": {
+        "summary": "Get all contractors",
+        "description": "Returns all contractors saved in HomeFix",
+        "responses": {
+          "200": {
+            "description": "Contractors returned success"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a contractor",
+        "description": "Adds a new contractor",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "contractor",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contractor"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Contractor created success"
+          },
+          "400": {
+            "description": "Missing required info"
+          }
+        }
+      },
+    "/contractors/{id}": {
+      "get": {
+        "summary": "Get one contractor",
+        "description": "Returns one contractor by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contractor returned"
+          },
+          "400": {
+            "description": "Invalid contractor id"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a contractor",
+        "description": "Updates one contractor by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "contractor",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contractor"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Contractor updated success"
+          },
+          "400": {
+            "description": "Invalid id or missing required info"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a contractor",
+        "description": "Deletes one contractor by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Contractor deleted success"
+          },
+          "400": {
+            "description": "Invalid contractor id"
+          }
+        }
+      }
+    }
   },
 
   "definitions": {
@@ -412,6 +515,36 @@
         "priority": {
           "type": "string",
           "example": "High"
+        }
+      }
+    },
+    "Contractor": {
+      "type": "object",
+      "required": ["name", "company", "phone", "service"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Mike Johnson"
+        },
+        "company": {
+          "type": "string",
+          "example": "Johnson Plumbing"
+        },
+        "phone": {
+          "type": "string",
+          "example": "801-555-2222"
+        },
+        "service": {
+          "type": "string",
+          "example": "Plumbing"
+        },
+        "email": {
+          "type": "string",
+          "example": "mike@johnsonplumbing.com"
+        },
+        "notes": {
+          "type": "string",
+          "example": "Available for emergency repairs."
         }
       }
     }

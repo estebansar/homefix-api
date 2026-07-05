@@ -4,6 +4,7 @@ const router = express.Router()
 const homesController = require("../controllers/homesController")
 const usersController = require("../controllers/usersController")
 const maintenanceTasksController = require("../controllers/maintenanceTasksController")
+const contractorsController = require("../controllers/contractorsController")
 
 // This is a test route to make sure my routes folder is connected
 router.get("/", (req, res) => {
@@ -30,5 +31,12 @@ router.get("/maintenanceTasks/:id", maintenanceTasksController.getSingleMaintena
 router.post("/maintenanceTasks", maintenanceTasksController.createMaintenanceTask)
 router.put("/maintenanceTasks/:id", maintenanceTasksController.updateMaintenanceTask)
 router.delete("/maintenanceTasks/:id", maintenanceTasksController.deleteMaintenanceTask)
+
+// Contractor routes
+router.get("/contractors", contractorsController.getAllContractors)
+router.get("/contractors/:id", contractorsController.getSingleContractor)
+router.post("/contractors", contractorsController.createContractor)
+router.put("/contractors/:id", contractorsController.updateContractor)
+router.delete("/contractors/:id", contractorsController.deleteContractor)
 
 module.exports = router

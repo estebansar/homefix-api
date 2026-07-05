@@ -317,7 +317,6 @@
           }
         }
       }
-    }
     },
     "/contractors": {
       "get": {
@@ -350,7 +349,8 @@
             "description": "Missing required info"
           }
         }
-      },
+      }
+    },
     "/contractors/{id}": {
       "get": {
         "summary": "Get one contractor",

@@ -20,15 +20,19 @@ app.use("/", routes)
 // This shows my API documentation in Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-// This starts the server only after MongoDB connects successfully
-mongodb
-  .initDb()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`)
+// This starts the server normally, but not while Jest is testing
+if (require.main === module) {
+  mongodb
+    .initDb()
+    .then(() => {
+      app.listen(port, () => {
+        console.log(`Server is running on port ${port}`)
+      })
     })
-  })
-  .catch((error) => {
-    console.error("Failed to start server:", error)
-  })
+    .catch((error) => {
+      console.error("Failed to start server:", error)
+    })
+}
 
+// This lets Jest use my Express app for testing
+module.exports = app

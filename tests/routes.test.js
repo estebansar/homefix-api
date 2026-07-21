@@ -1,0 +1,78 @@
+const request = require("supertest")
+const app = require("../server")
+const mongodb = require("../data/database")
+
+let testHomeId
+
+// This connects to MongoDB before the tests start
+beforeAll(async () => {
+  await mongodb.initDb()
+})
+
+// This closes MongoDB after all tests finish
+afterAll(async () => {
+  await mongodb.closeDb()
+})
+
+// This checks that the main HomeFix API route is working
+describe("HomeFix API", () => {
+  test("GET / should return a success message", async () => {
+    const response = await request(app).get("/")
+
+    expect(response.statusCode).toBe(200)
+    expect(response.text).toBe("HomeFix API routes are working")
+  })
+
+  // This checks that all homes are returned as JSON
+  test("GET /homes should return a list of homes", async () => {
+    const response = await request(app).get("/homes")
+
+    expect(response.statusCode).toBe(200)
+    expect(Array.isArray(response.body)).toBe(true)
+  })
+
+    // This creates a new home and saves its id for the next tests
+  test("POST /homes should create a new home", async () => {
+    const response = await request(app)
+      .post("/homes")
+      .send({
+        ownerName: "Jest Test",
+        address: "123 Test Street",
+        city: "Lehi",
+        state: "UT",
+        zipCode: "84043",
+        homeType: "House",
+        yearBuilt: 2024,
+        notes: "Created by Jest"
+      })
+
+    expect(response.statusCode).toBe(201)
+
+    testHomeId = response.body.insertedId
+    expect(testHomeId).toBeDefined()
+  })
+
+  // This checks that all users are returned as JSON
+  test("GET /users should return a list of users", async () => {
+    const response = await request(app).get("/users")
+
+    expect(response.statusCode).toBe(200)
+    expect(Array.isArray(response.body)).toBe(true)
+  })
+
+  // This checks that all maintenance tasks are returned as JSON
+  test("GET /maintenanceTasks should return a list of maintenance tasks", async () => {
+    const response = await request(app).get("/maintenanceTasks")
+
+    expect(response.statusCode).toBe(200)
+    expect(Array.isArray(response.body)).toBe(true)
+  })
+
+  // This checks that all contractors are returned as JSON
+  test("GET /contractors should return a list of contractors", async () => {
+    const response = await request(app).get("/contractors")
+
+    expect(response.statusCode).toBe(200)
+    expect(Array.isArray(response.body)).toBe(true)
+  })
+})

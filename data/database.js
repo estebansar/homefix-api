@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb")
 
 let database
+let client
 
 // This connects my project to MongoDB Atlas
 const initDb = async () => {
@@ -9,7 +10,7 @@ const initDb = async () => {
   }
 
   try {
-    const client = await MongoClient.connect(process.env.MONGODB_URI)
+    client = await MongoClient.connect(process.env.MONGODB_URI)
     database = client.db("homefixDB")
     console.log("Connected to MongoDB")
     return database
@@ -27,7 +28,17 @@ const getDb = () => {
   return database
 }
 
+// This closes the database connection after testing
+const closeDb = async () => {
+  if (client) {
+    await client.close()
+    database = null
+    client = null
+  }
+}
+
 module.exports = {
   initDb,
-  getDb
+  getDb,
+  closeDb
 }

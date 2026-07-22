@@ -52,6 +52,40 @@ describe("HomeFix API", () => {
     expect(testHomeId).toBeDefined()
   })
 
+    // This checks that one home can be returned by id
+  test("GET /homes/:id should return one home", async () => {
+    const response = await request(app).get(`/homes/${testHomeId}`)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body._id).toBe(testHomeId)
+    expect(response.body.ownerName).toBe("Jest Test")
+  })
+
+    // This checks that one home can be updated by id
+  test("PUT /homes/:id should update one home", async () => {
+    const response = await request(app)
+      .put(`/homes/${testHomeId}`)
+      .send({
+        ownerName: "Jest Test Updated",
+        address: "123 Test Street",
+        city: "Lehi",
+        state: "UT",
+        zipCode: "84043",
+        homeType: "House",
+        yearBuilt: 2024,
+        notes: "Updated by Jest"
+      })
+
+    expect(response.statusCode).toBe(204)
+  })
+
+    // This checks that one home can be deleted by id
+  test("DELETE /homes/:id should delete one home", async () => {
+    const response = await request(app).delete(`/homes/${testHomeId}`)
+
+    expect(response.statusCode).toBe(204)
+  })
+
   // This checks that all users are returned as JSON
   test("GET /users should return a list of users", async () => {
     const response = await request(app).get("/users")

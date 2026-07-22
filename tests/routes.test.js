@@ -5,6 +5,7 @@ const mongodb = require("../data/database")
 let testHomeId
 let testUserId
 let testTaskId
+let testContractorId
 
 // This connects to MongoDB before the tests start
 beforeAll(async () => {
@@ -213,4 +214,61 @@ describe("HomeFix API", () => {
     expect(response.statusCode).toBe(200)
     expect(Array.isArray(response.body)).toBe(true)
   })
+
+  // This creates a new contractor and saves its id for the next tests
+  test("POST /contractors should create a new contractor", async () => {
+    const response = await request(app)
+      .post("/contractors")
+      .send({
+        name: "Test Person",
+        company: "Jest Contractor",
+        phone: "801-555-0202",
+        service: "Plumbing-havc",
+        email: "jestcontractor@test.com",
+        notes: "Created by sauron"
+      })
+
+    expect(response.statusCode).toBe(201)
+
+    testContractorId = response.body.insertedId
+    expect(testContractorId).toBeDefined()
+  })
+
+    // This checks that one contractor can be returned by id
+  test("GET /contractors/:id should return one contractor", async () => {
+    const response = await request(app).get(
+      `/contractors/${testContractorId}`
+    )
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body._id).toBe(testContractorId)
+    expect(response.body.name).toBe("Test Person")
+  })
+
+    // This checks that one contractor can be updated by id
+  test("PUT /contractors/:id should update one contractor", async () => {
+    const response = await request(app)
+      .put(`/contractors/${testContractorId}`)
+      .send({
+        name: "Updated Person",
+        company: "Updated Contractor",
+        phone: "801-555-0202",
+        service: "Electrical",
+        email: "updatedcontractor@example.com",
+        notes: "Updated by Jest"
+      })
+
+    expect(response.statusCode).toBe(204)
+  })
+
+    // This checks that one contractor can be deleted by id
+  test("DELETE /contractors/:id should delete one contractor", async () => {
+    const response = await request(app).delete(
+      `/contractors/${testContractorId}`
+    )
+
+    expect(response.statusCode).toBe(204)
+  })
+
+
 })

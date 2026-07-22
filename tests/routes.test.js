@@ -3,6 +3,7 @@ const app = require("../server")
 const mongodb = require("../data/database")
 
 let testHomeId
+let testUserId
 
 // This connects to MongoDB before the tests start
 beforeAll(async () => {
@@ -93,6 +94,56 @@ describe("HomeFix API", () => {
     expect(response.statusCode).toBe(200)
     expect(Array.isArray(response.body)).toBe(true)
   })
+
+    // This creates a new user and saves its id for the next tests
+  test("POST /users should create a new user", async () => {
+    const response = await request(app)
+      .post("/users")
+      .send({
+        firstName: "Jest",
+        lastName: "User",
+        email: "jestuser@example.com",
+        phone: "801-555-0101"
+      })
+
+    expect(response.statusCode).toBe(201)
+
+    testUserId = response.body.insertedId
+    expect(testUserId).toBeDefined()
+  })
+
+    // This checks that one user can be returned by id
+  test("GET /users/:id should return one user", async () => {
+    const response = await request(app).get(`/users/${testUserId}`)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body._id).toBe(testUserId)
+    expect(response.body.firstName).toBe("Jest")
+  })
+
+    // This checks that one user can be updated by id
+  test("PUT /users/:id should update one user", async () => {
+    const response = await request(app)
+      .put(`/users/${testUserId}`)
+      .send({
+        firstName: "Updated",
+        lastName: "User",
+        email: "updateduser@example.com",
+        phone: "801-555-0101"
+      })
+
+    expect(response.statusCode).toBe(204)
+  })
+
+    // This checks that one user can be deleted by id
+  test("DELETE /users/:id should delete one user", async () => {
+    const response = await request(app).delete(`/users/${testUserId}`)
+
+    expect(response.statusCode).toBe(204)
+  })
+  
+
+
 
   // This checks that all maintenance tasks are returned as JSON
   test("GET /maintenanceTasks should return a list of maintenance tasks", async () => {

@@ -4,6 +4,7 @@ const mongodb = require("../data/database")
 
 let testHomeId
 let testUserId
+let testTaskId
 
 // This connects to MongoDB before the tests start
 beforeAll(async () => {
@@ -141,7 +142,7 @@ describe("HomeFix API", () => {
 
     expect(response.statusCode).toBe(204)
   })
-  
+
 
 
 
@@ -151,6 +152,58 @@ describe("HomeFix API", () => {
 
     expect(response.statusCode).toBe(200)
     expect(Array.isArray(response.body)).toBe(true)
+  })
+
+    // This creates a new maintenance task and saves its id for the next tests
+  test("POST /maintenanceTasks should create a new maintenance task", async () => {
+    const response = await request(app)
+      .post("/maintenanceTasks")
+      .send({
+        homeId: testHomeId,
+        title: "Jest Maintenance Test",
+        description: "Test the air conditioner",
+        status: "Pending"
+      })
+
+    expect(response.statusCode).toBe(201)
+
+    testTaskId = response.body.insertedId
+    expect(testTaskId).toBeDefined()
+  })
+
+
+    // This checks that one maintenance task can be returned by id
+  test("GET /maintenanceTasks/:id should return one maintenance task", async () => {
+    const response = await request(app).get(
+      `/maintenanceTasks/${testTaskId}`
+    )
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body._id).toBe(testTaskId)
+    expect(response.body.title).toBe("Jest Maintenance Test")
+  })
+
+    // This checks that one maintenance task can be updated by id
+  test("PUT /maintenanceTasks/:id should update one maintenance task", async () => {
+    const response = await request(app)
+      .put(`/maintenanceTasks/${testTaskId}`)
+      .send({
+        homeId: testHomeId,
+        title: "Jest Maintenance Test Updated",
+        description: "Updated air conditioner test",
+        status: "Completed"
+      })
+
+    expect(response.statusCode).toBe(204)
+  })
+
+    // This checks that one maintenance task can be deleted by id
+  test("DELETE /maintenanceTasks/:id should delete one maintenance task", async () => {
+    const response = await request(app).delete(
+      `/maintenanceTasks/${testTaskId}`
+    )
+
+    expect(response.statusCode).toBe(204)
   })
 
   // This checks that all contractors are returned as JSON

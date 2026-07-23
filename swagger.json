@@ -427,7 +427,7 @@
     "Home": {
       "type": "object",
       "required": [
-        "homeName",
+        "ownerName",
         "address",
         "city",
         "state",
@@ -436,7 +436,7 @@
         "yearBuilt"
       ],
       "properties": {
-        "homeName": {
+        "ownerName": {
           "type": "string",
           "example": "Main House"
         },
